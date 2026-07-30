@@ -1,0 +1,7 @@
+node_modules
+dist
+build
+.next
+coverage
+backend/src/generated
+package-lock.json
