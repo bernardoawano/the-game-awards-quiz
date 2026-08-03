@@ -59,10 +59,10 @@ Projeto de estudo/portfólio. O nível de rigor (testes, deploy, CI/CD) é calib
 Nem toda combinação (ano, categoria) do CSV pode virar uma pergunta de quiz. A análise do dataset revelou:
 
 - **154 de 163** combinações (ano, categoria) têm exatamente 1 vencedor e 2+ indicados — essas são perguntas válidas.
-- **9 combinações são inelegíveis:**
-  - 2 casos com **múltiplos vencedores** na mesma categoria/ano (ex.: "Global Gaming Citizens" 2019 tem 5 indicados, todos marcados como vencedores — prêmio honorífico, não competitivo; "ESports Team of the Year" 2014 tem 2 vencedores entre 5 indicados).
-  - 3 casos **sem nenhum vencedor registrado** (ex.: "Industry Icon Award" 2016, "Trending Gamer" 2014).
-  - Casos com apenas 1 indicado no total (sem alternativa de escolha).
+- **9 combinações são inelegíveis** (motivos mutuamente exclusivos — quando uma combinação se encaixa em mais de um, prevalece "apenas 1 indicado"):
+  - **2 casos com múltiplos vencedores** na mesma categoria/ano: "ESports Team of the Year" 2014 (2 vencedores entre 5 indicados); "Global Gaming Citizens" 2019 (5 indicados, todos vencedores — prêmio honorífico, não competitivo).
+  - **2 casos sem nenhum vencedor registrado** (com 2+ indicados): "Trending Gamer" 2014; "ESports Game of the Year" 2016.
+  - **5 casos com apenas 1 indicado no total** (sem alternativa de escolha): "Industry Icon Award" em 2014, 2015, 2016, 2017 e 2018 (o de 2016 também não tem vencedor registrado, mas conta aqui por ter só 1 indicado).
 
 **Regra:** uma pergunta de quiz só existe para combinações (ano, categoria) com **2+ indicados E exatamente 1 vencedor**. As 9 combinações inelegíveis continuam visíveis no modo Exploração, mas nunca aparecem no modo Quiz.
 

@@ -67,6 +67,16 @@ export default defineConfig(
   {
     files: ['**/*.{js,mjs,cjs}'],
     extends: [js.configs.recommended, importX.flatConfigs.recommended],
+    languageOptions: {
+      globals: {
+        require: 'readonly',
+        module: 'writable',
+        exports: 'writable',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        process: 'readonly',
+      },
+    },
     settings: {
       'import-x/resolver-next': [createNodeResolver()],
     },
