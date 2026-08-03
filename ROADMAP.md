@@ -41,6 +41,10 @@ As **9 inelegíveis**, por motivo (o teste unitário da Fase 3 as afirma nominal
 - **Tailwind v4** — `tailwindcss @tailwindcss/postcss postcss`; sem `tailwind.config.js`, sem `autoprefixer`; tokens via `@import "tailwindcss"` + bloco `@theme`.
 - **Express 5** — promise rejeitada em handler async vai sozinha ao error handler (nada de wrapper); `app.all('*')` **quebra** (path-to-regexp 8) → usar `app.use(notFound)`; `req.query` virou getter **não-gravável** → validação escreve em `res.locals`.
 - **TypeScript** (verificado na Fase 0) — o `latest` do npm hoje é a **7.0.2** (novo compilador nativo/Go, "tsgo"). `typescript-eslint` 8.x declara `peerDependencies.typescript: ">=4.8.4 <6.1.0"` e **crasha ao carregar o parser** com TS 7. **Fixar `typescript` em `^6.0.3`** (última stable na faixa suportada) em toda fase que instalar TypeScript — raiz (Fase 0), backend (Fase 1) e frontend (Fase 9).
+- **TypeScript 6.0 — `moduleResolution: "node10"`/`"node"` deprecated** (verificado na Fase 1), removido no 7.0. O próprio `tsconfig-base.json` do time do TypeScript usa `"module": "NodeNext", "moduleResolution": "NodeNext"`. Para um workspace CJS sem `"type": "module"` no `package.json`, isso resolve tudo como CommonJS (o "CJS deliberado" do plano) sem usar a estratégia deprecated. Todas as deps da Fase 1 (zod, dotenv, express-rate-limit, csv-parse) publicam `exports` com condição `"require"`, então nada quebra sob CJS.
+- **Prisma 7.9.1 (`@prisma/client`/`prisma`/`@prisma/adapter-pg`)** — `engines.node: "^20.19 || ^22.12 || >=24.0"`. O `engines.node` da raiz (`>=20.9` desde a Fase 0) não cobria isso — corrigido na Fase 1 para o mesmo range em `package.json` (raiz) e `backend/package.json`. A Fase 13 (README) precisa citar essa faixa, não "Node 20.9+".
+- **Helmet 8.x** — `Cross-Origin-Resource-Policy: same-origin` é o default. Como o frontend (3000) chama o backend (4000) com `credentials: 'include'` a partir da Fase 9+, isso bloquearia respostas no navegador silenciosamente (CORP é aplicado pelo browser, independente do header CORS). Corrigido na Fase 1 com `helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } })` em `app.ts`.
+- **`@typescript-eslint/no-unused-vars`** não tem `argsIgnorePattern` default — parâmetros finais não usados (ex.: `next` no error handler do Express, que exige aridade 4) são reportados a menos que a regra seja configurada. Adicionado `argsIgnorePattern`/`varsIgnorePattern`/`caughtErrorsIgnorePattern: '^_'` ao `eslint.config.mjs` na Fase 1.
 
 ### Decisões confirmadas
 
@@ -311,7 +315,7 @@ Mais as guardas de segurança: nenhuma resposta de `/api/quiz/next` contém `isW
 | Risco | Mitigação |
 |---|---|
 | **`category-map.ts` é o artefato de maior risco** — uma fusão errada quebra o 154/9 silenciosamente | Os 3 testes-guarda da Fase 3 (0 desconhecidas, slugs únicos, 0 fusões no mesmo ano) rodam antes de qualquer linha de UI |
-| `bcrypt` nativo pode não compilar no Windows | Fallback `bcryptjs`, decidido na Fase 7 e registrado em CLAUDE.md |
+| `bcrypt` nativo pode não compilar no Windows | Fallback `bcryptjs` — o risco vale já na Fase 1 (é quando `bcrypt` é instalado), não só na Fase 7 |
 | `typescript@latest` (7.x, compilador nativo) quebra `typescript-eslint` 8.x | `typescript` fixado em `^6.0.3` em toda instalação (raiz na Fase 0; conferir de novo no backend/frontend) |
 | Regressão para APIs antigas (Prisma 6, Next 15, Express 4, Tailwind 3) | As diferenças verificadas estão listadas no topo deste plano; conferir Context7 antes de qualquer API nova |
 | Teste apontar para o banco de dev | A guarda de sufixo `_test` na Fase 5 lança antes de qualquer conexão |
