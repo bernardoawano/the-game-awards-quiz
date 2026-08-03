@@ -1,0 +1,86 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum VotedBy {
+  jury
+  fan
+}
+
+model Category {
+  id            Int    @id @default(autoincrement())
+  canonicalName String @unique @map("canonical_name")
+  slug          String @unique
+
+  nominations   Nomination[]
+  quizQuestions QuizQuestion[]
+
+  @@map("categories")
+}
+
+model Nomination {
+  id         Int     @id @default(autoincrement())
+  year       Int
+  categoryId Int     @map("category_id")
+  nominee    String
+  company    String?
+  isWinner   Boolean @map("is_winner")
+  votedBy    VotedBy @map("voted_by")
+
+  category Category @relation(fields: [categoryId], references: [id])
+
+  correctForQuestions QuizQuestion[]
+  chosenInAttempts    QuizAttempt[]
+
+  @@index([year, categoryId])
+  @@index([categoryId])
+  @@map("nominations")
+}
+
+model QuizQuestion {
+  id                  Int @id @default(autoincrement())
+  year                Int
+  categoryId          Int @map("category_id")
+  correctNominationId Int @map("correct_nomination_id")
+
+  category          Category      @relation(fields: [categoryId], references: [id])
+  correctNomination Nomination    @relation(fields: [correctNominationId], references: [id])
+  attempts          QuizAttempt[]
+
+  @@unique([year, categoryId])
+  @@map("quiz_questions")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  quizAttempts QuizAttempt[]
+
+  @@map("users")
+}
+
+model QuizAttempt {
+  id                 Int      @id @default(autoincrement())
+  userId             Int      @map("user_id")
+  quizQuestionId     Int      @map("quiz_question_id")
+  chosenNominationId Int      @map("chosen_nomination_id")
+  isCorrect          Boolean  @map("is_correct")
+  answeredAt         DateTime @default(now()) @map("answered_at")
+
+  user             User         @relation(fields: [userId], references: [id])
+  quizQuestion     QuizQuestion @relation(fields: [quizQuestionId], references: [id])
+  chosenNomination Nomination   @relation(fields: [chosenNominationId], references: [id])
+
+  @@unique([userId, quizQuestionId])
+  @@index([userId])
+  @@map("quiz_attempts")
+}
