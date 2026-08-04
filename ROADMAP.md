@@ -191,7 +191,7 @@ Antecipado para cá (não deixado para o fim) porque o output do seed no banco j
 | `GET /api/categories?year=` | `category.findMany` filtrado por `nominations: { some: { year } }` |
 | `GET /api/nominations?year=&categoryId=` | `select` explícito **incluindo `isWinner`** (PRD 4.2 — Exploração revela o vencedor) |
 
-Params opcionais (`z.coerce.number().int().optional()`); ano/categoria inexistente → **200 com `items: []`**, não erro (PRD 6). `Cache-Control: public, max-age=300` nos três.
+Params opcionais (`z.coerce.number().int().optional()`); ano/categoria inexistente → **200 com lista vazia**, não erro (PRD 6). Resposta é array JSON puro (`[...]`) nos três — o envelope `{ items, page, pageSize, total }` do CLAUDE.md é só para listas paginadas, e catálogo não é paginado. `Cache-Control: public, max-age=300` nos três.
 
 **Saída:** `tests/integration/catalog.test.ts` verde (6 anos; um `isWinner: true` por combo; `?year=1999` → 200 vazio).
 

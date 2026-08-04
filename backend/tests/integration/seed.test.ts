@@ -1,10 +1,6 @@
 import { prisma } from '../../src/lib/prisma';
 
 describe('seed', () => {
-  afterAll(async () => {
-    await prisma.$disconnect();
-  });
-
   it('creates exactly 805 nominations', async () => {
     expect(await prisma.nomination.count()).toBe(805);
   });

@@ -5,6 +5,7 @@ module.exports = {
   ...createDefaultPreset(),
   testEnvironment: 'node',
   setupFiles: ['<rootDir>/tests/helpers/load-test-env.ts'],
+  setupFilesAfterEnv: ['<rootDir>/tests/helpers/setup-after-env.ts'],
   globalSetup: '<rootDir>/tests/helpers/global-setup.ts',
   globalTeardown: '<rootDir>/tests/helpers/global-teardown.ts',
   maxWorkers: 1,
