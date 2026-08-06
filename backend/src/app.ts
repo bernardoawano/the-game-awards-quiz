@@ -8,6 +8,7 @@ import { errorHandler } from './middlewares/error-handler';
 import { notFound } from './middlewares/not-found';
 import { authRoutes } from './routes/auth.routes';
 import { catalogRoutes } from './routes/catalog.routes';
+import { quizRoutes } from './routes/quiz.routes';
 
 export const app = express();
 
@@ -26,6 +27,7 @@ app.get('/health', (_req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/quiz', quizRoutes);
 app.use('/api', catalogRoutes);
 
 app.use(notFound);
