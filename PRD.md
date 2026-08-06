@@ -108,6 +108,7 @@ O script é idempotente/reexecutável, permitindo recriar o banco do zero a qual
 - `POST /api/auth/register` `{email, password}`.
 - `POST /api/auth/login` `{email, password}` → seta cookie com JWT.
 - `GET /api/auth/me` — retorna o usuário autenticado atual.
+- `POST /api/auth/logout` — limpa o cookie de sessão.
 
 **Quiz — requer login:**
 - `GET /api/quiz/next` — retorna uma pergunta de `quiz_questions` ainda não respondida pelo usuário: ano, categoria e lista de indicados, **sem revelar o vencedor**. Retorna vazio quando não há mais perguntas.
@@ -141,6 +142,7 @@ Barra superior com links para Explorar / Quiz / Histórico (os dois últimos vis
 - **Cadastro com email já existente:** 409 com mensagem clara.
 - **Login inválido:** 401 com mensagem genérica (não revela se o email existe).
 - **Filtros inválidos em `/explore`:** ano/categoria inexistente retorna lista vazia (não é erro); o frontend mostra um estado vazio amigável.
+- **Excesso de requisições em `/api/auth/*`:** rate limit rejeita com 429 e mensagem genérica.
 
 ## 7. Testes, Deploy & Critérios de Aceite
 
