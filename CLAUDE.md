@@ -57,14 +57,14 @@ Browser ──> Next.js :3000 (RSC + Client Components) ──> Express :4000 �
 ```
 TGA/ ── PRD.md · CLAUDE.md · ROADMAP.md · README.md · docker-compose.yml · package.json (workspaces) · data/the_game_awards.csv
 ├── backend/
-│   ├── prisma/           schema.prisma · migrations/ · seed.ts · category-map.ts   (+ prisma.config.ts na raiz do workspace backend/)
-│   ├── src/              server.ts · app.ts (exportado p/ testes) · config/env.ts · lib/prisma.ts · errors/AppError.ts · generated/prisma/ (gitignored, gerado pelo Prisma)
+│   ├── prisma/           schema.prisma · migrations/ · seed.ts · category-map.ts · eligibility.ts   (+ prisma.config.ts na raiz do workspace backend/)
+│   ├── src/              server.ts · app.ts (exportado p/ testes) · config/env.ts · lib/prisma.ts · errors/AppError.ts · generated/prisma/ (gitignored, gerado pelo Prisma) · types/ (express.d.ts)
 │   │                     middlewares/ (requireAuth, validate, notFound, errorHandler) · schemas/ · routes/ · controllers/ · services/
-│   └── tests/            unit/ (elegibilidade, normalização, correção) · integration/ (fluxo completo)
+│   └── tests/            unit/ (elegibilidade, normalização, correção) · integration/ (fluxo completo) · helpers/
 └── frontend/src/
     ├── app/              layout.tsx · page.tsx · explore/ · login/ · register/ · quiz/ · quiz/history/
-    ├── components/       ui/ (primitivos burros) · <feature>/ (NominationsTable, QuizCard, StatsSummary…)
-    └── lib/api.ts        serverFetch / clientFetch — ÚNICO ponto de acesso à API   (+ types/api.ts · styles/globals.css)
+    ├── components/       ui/ (primitivos burros) · layout/ (Navbar) · <feature>/ (NominationsTable, QuizCard, StatsSummary…)
+    └── lib/api.ts        serverFetch / clientFetch — ÚNICO ponto de acesso à API   (+ lib/session.ts · types/api.ts · styles/globals.css)
 ```
 
 **Modelo de dados** (PRD 3.3 — não altere sem atualizar o PRD):
@@ -159,7 +159,7 @@ TGA/ ── PRD.md · CLAUDE.md · ROADMAP.md · README.md · docker-compose.yml
 - Integração obrigatória: `register → login → /quiz/next → /quiz/answer → /quiz/stats` com supertest sobre o `app` exportado, incluindo resposta duplicada → 409.
 - Banco de teste separado — **nunca aponte teste para o banco de dev**. Testes independentes de ordem e que limpam o que criaram. Frontend é opcional no MVP.
 
-**Ambiente e scripts:** `npm install` → `docker compose up -d` → copiar `.env.example` → `npm run db:migrate -w backend` → `npm run db:seed -w backend` → `npm run dev`. Scripts: `dev`, `db:migrate`, `db:seed`, `db:reset` (recria do zero), `test`, `lint`, `format`, `typecheck`.
+**Ambiente e scripts:** `npm install` → `docker compose up -d` → copiar `backend/.env.example` para `backend/.env` e `frontend/.env.example` para `frontend/.env.local` (o Next só lê env de dentro de `frontend/`) → `npm run db:migrate -w backend` → `npm run db:seed -w backend` → `npm run dev`. Scripts: `dev`, `db:migrate`, `db:seed`, `db:reset` (recria do zero), `test`, `lint`, `format`, `typecheck`.
 
 **Git:** Conventional Commits em inglês (`feat(quiz): add next question endpoint`); um commit = uma mudança coerente (não misture migration + refactor + feature); branches `feat/…`, `fix/…`, `chore/…`. Nunca commite `.env`, `node_modules/`, build output ou cliente Prisma gerado.
 

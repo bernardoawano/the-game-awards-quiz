@@ -3,6 +3,8 @@ import { fileURLToPath } from 'node:url';
 
 import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
+import nextVitals from 'eslint-config-next/core-web-vitals';
+import nextTs from 'eslint-config-next/typescript';
 import prettierConfig from 'eslint-config-prettier';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import { createNodeResolver, importX } from 'eslint-plugin-import-x';
@@ -48,7 +50,13 @@ export default defineConfig(
       },
     },
     settings: {
-      'import-x/resolver-next': [createTypeScriptImportResolver(), createNodeResolver()],
+      'import-x/resolver-next': [
+        createTypeScriptImportResolver({
+          project: ['backend/tsconfig.json', 'frontend/tsconfig.json'],
+          noWarnOnMultipleProjects: true,
+        }),
+        createNodeResolver(),
+      ],
     },
     rules: {
       '@typescript-eslint/no-explicit-any': 'error',
@@ -63,6 +71,10 @@ export default defineConfig(
       'no-console': ['error', { allow: ['warn', 'error'] }],
       'import-x/order': importOrderRule,
     },
+  },
+  {
+    files: ['frontend/**/*.{ts,tsx}'],
+    extends: [nextVitals, nextTs],
   },
   {
     files: ['**/*.{js,mjs,cjs}'],

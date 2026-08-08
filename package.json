@@ -20,9 +20,9 @@
     "typecheck": "npm run typecheck -w backend && npm run typecheck -w frontend"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
+    "@eslint/js": "^9.39.5",
     "concurrently": "^10.0.4",
-    "eslint": "^10.8.0",
+    "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-import-x": "^4.17.1",
