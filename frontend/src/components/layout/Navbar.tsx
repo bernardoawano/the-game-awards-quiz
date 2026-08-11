@@ -20,8 +20,8 @@ export async function Navbar(): Promise<React.ReactElement> {
         <div className="flex items-center gap-3 text-sm">
           {user === null ? (
             <>
-              <a href="/login">Login</a>
-              <a href="/register">Registro</a>
+              <Link href="/login">Login</Link>
+              <Link href="/register">Registro</Link>
             </>
           ) : (
             <>
