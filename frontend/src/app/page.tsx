@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 
@@ -11,7 +13,7 @@ export default function HomePage(): React.ReactElement {
       </p>
       <Card className="flex flex-col gap-4 sm:flex-row">
         <Button asChild>
-          <a href="/explore">Explorar indicações</a>
+          <Link href="/explore">Explorar indicações</Link>
         </Button>
         <Button asChild variant="secondary">
           <a href="/quiz">Jogar Quiz</a>

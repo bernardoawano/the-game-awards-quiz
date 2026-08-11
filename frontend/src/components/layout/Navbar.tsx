@@ -13,7 +13,7 @@ export async function Navbar(): Promise<React.ReactElement> {
           <Link href="/" className="font-semibold">
             TGA Quiz
           </Link>
-          <a href="/explore">Explorar</a>
+          <Link href="/explore">Explorar</Link>
           {user !== null && <a href="/quiz">Quiz</a>}
           {user !== null && <a href="/quiz/history">Histórico</a>}
         </div>
