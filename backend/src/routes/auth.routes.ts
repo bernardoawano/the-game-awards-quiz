@@ -8,13 +8,12 @@ import { loginSchema, registerSchema } from '../schemas/auth.schema';
 
 export const authRoutes = Router();
 
-authRoutes.use(authRateLimit);
 authRoutes.use((_req, res, next) => {
   res.set('Cache-Control', 'no-store');
   next();
 });
 
-authRoutes.post('/register', validate(registerSchema), authController.register);
-authRoutes.post('/login', validate(loginSchema), authController.login);
+authRoutes.post('/register', authRateLimit, validate(registerSchema), authController.register);
+authRoutes.post('/login', authRateLimit, validate(loginSchema), authController.login);
 authRoutes.get('/me', requireAuth, authController.me);
 authRoutes.post('/logout', authController.logout);
