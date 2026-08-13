@@ -16,7 +16,7 @@ export default function HomePage(): React.ReactElement {
           <Link href="/explore">Explorar indicações</Link>
         </Button>
         <Button asChild variant="secondary">
-          <a href="/quiz">Jogar Quiz</a>
+          <Link href="/quiz">Jogar Quiz</Link>
         </Button>
       </Card>
     </div>

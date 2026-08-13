@@ -14,8 +14,8 @@ export async function Navbar(): Promise<React.ReactElement> {
             TGA Quiz
           </Link>
           <Link href="/explore">Explorar</Link>
-          {user !== null && <a href="/quiz">Quiz</a>}
-          {user !== null && <a href="/quiz/history">Histórico</a>}
+          {user !== null && <Link href="/quiz">Quiz</Link>}
+          {user !== null && <Link href="/quiz/history">Histórico</Link>}
         </div>
         <div className="flex items-center gap-3 text-sm">
           {user === null ? (

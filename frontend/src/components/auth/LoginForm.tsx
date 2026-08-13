@@ -1,6 +1,5 @@
 'use client';
 
-import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -55,7 +54,7 @@ export function LoginForm(): React.ReactElement {
         method: 'POST',
         body: JSON.stringify({ email, password }),
       });
-      router.push('/quiz' as Route);
+      router.push('/quiz');
       router.refresh();
     } catch (error) {
       setFormError(error instanceof ApiError ? error.message : 'Não foi possível entrar. Tente novamente.');

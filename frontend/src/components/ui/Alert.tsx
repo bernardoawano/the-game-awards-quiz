@@ -1,5 +1,6 @@
 interface AlertProps {
   variant: 'error' | 'success' | 'info';
+  live?: 'assertive' | 'polite';
   children: React.ReactNode;
 }
 
@@ -27,10 +28,10 @@ const STYLES: Record<'error' | 'success' | 'info', string> = {
   info: 'bg-brand-500/10 text-brand-600 border-brand-500/30',
 };
 
-export function Alert({ variant, children }: AlertProps): React.ReactElement {
+export function Alert({ variant, live = 'assertive', children }: AlertProps): React.ReactElement {
   return (
     <div
-      role="alert"
+      role={live === 'polite' ? 'status' : 'alert'}
       className={`flex items-start gap-2 rounded border px-3 py-2 text-sm ${STYLES[variant]}`}
     >
       {ICONS[variant]}
