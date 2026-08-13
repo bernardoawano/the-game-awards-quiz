@@ -64,7 +64,7 @@ TGA/ ── PRD.md · CLAUDE.md · ROADMAP.md · README.md · docker-compose.yml
 └── frontend/src/
     ├── app/              layout.tsx · page.tsx · explore/ · login/ · register/ · quiz/ · quiz/history/
     ├── components/       ui/ (primitivos burros) · layout/ (Navbar) · <feature>/ (NominationsTable, QuizCard, StatsSummary…)
-    └── lib/api.ts        serverFetch / clientFetch — ÚNICO ponto de acesso à API   (+ lib/session.ts · types/api.ts · styles/globals.css)
+    └── lib/api.ts (serverFetch) · lib/api.client.ts (clientFetch) · lib/api-error.ts (ApiError/parse) — ÚNICO ponto de acesso à API   (+ lib/session.ts · types/api.ts · styles/globals.css)
 ```
 
 **Modelo de dados** (PRD 3.3 — não altere sem atualizar o PRD):
@@ -119,7 +119,7 @@ TGA/ ── PRD.md · CLAUDE.md · ROADMAP.md · README.md · docker-compose.yml
 
 - **Server Component é o padrão.** `'use client'` só com estado/efeito/evento, e sempre no componente mais folha possível.
 - Páginas orquestram e buscam dados; componentes renderizam. `components/ui/` são primitivos burros (sem regra de negócio, sem fetch); `components/<feature>/` conhece o domínio.
-- **Todo acesso à API passa por `lib/api.ts`** — `serverFetch` (Server Components, encaminha o cookie via `(await cookies()).toString()`) e `clientFetch` (browser, `credentials: 'include'`). Ambos leem `NEXT_PUBLIC_API_URL`, parseiam o envelope de erro e lançam `ApiError` tipado. Nunca URL hardcoded fora desse módulo.
+- **Todo acesso à API passa por `lib/api.ts` / `lib/api.client.ts` / `lib/api-error.ts`** — `serverFetch` (em `lib/api.ts`, Server Components, encaminha o cookie via `(await cookies()).toString()`) e `clientFetch` (em `lib/api.client.ts`, browser, `credentials: 'include'`) ficam em arquivos separados porque um Client Component que importa qualquer coisa de um módulo que também importa `next/headers` quebra em runtime, mesmo sem usar a função que precisa dele. `lib/api-error.ts` concentra o que os dois compartilham (`ApiError`, `getApiUrl`, `parseResponse`). Ambos leem `NEXT_PUBLIC_API_URL`, parseiam o envelope de erro e lançam `ApiError` tipado. Nunca URL hardcoded fora desses módulos.
 - Todo estado assíncrono trata os **quatro estados**: `loading`, `empty`, `error`, `success`. Vazio é amigável ("Nenhum indicado para este filtro"), não erro.
 - **Navbar:** Explorar / Quiz / Histórico (os dois últimos só logado) + estado de sessão (Login/Registro ou email + Sair).
 - **`/explore`:** ano e categoria vivem na query string (`?year=2018&categoryId=3`) para ser compartilhável; vencedor destacado com badge, nunca só por cor.
