@@ -7,6 +7,24 @@ Aplicação full-stack sobre o dataset do The Game Awards (2014–2019, `data/th
 
 Veja `PRD.md` para o produto, `CLAUDE.md` para as convenções técnicas e `ROADMAP.md` para o plano de implementação em fases.
 
+## Screenshots
+
+### Capa
+
+![Tela do inicio](docs/screenshots/landing.png)
+
+### Exploração
+
+![Tela de exploração](docs/screenshots/explore.png)
+
+### Quiz
+
+![Tela do quiz](docs/screenshots/quiz.png)
+
+### Histórico
+
+![Histórico do quiz](docs/screenshots/history.png)
+
 ## Pré-requisitos
 
 - **Node.js** `^20.19 || ^22.12 || >=24.0`
